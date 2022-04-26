@@ -8,6 +8,7 @@ namespace LibraryConsoleLib.DTO
 {
     public class PublisherDTO
     {
+        public int Id { get; set; }
         public string Name { get; init; }
         public string Address { get; init; }
         public string City { get; init; }

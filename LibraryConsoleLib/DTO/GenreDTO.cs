@@ -8,6 +8,7 @@ namespace LibraryConsoleLib.DTO
 {
     public class GenreDTO
     {
+        public int Id { get; set; }
         public string? Description { get; init; }
         public bool IsFiction { get; init; }
         public string? Name { get; init; }

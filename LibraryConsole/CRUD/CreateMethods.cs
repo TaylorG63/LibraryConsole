@@ -1,4 +1,5 @@
-﻿using LibraryConsoleLib.DTO;
+﻿using LibraryConsoleDBController.DB_controller;
+using LibraryConsoleLib.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace LibraryConsoleUI
     {
         public void CreateUser(DataHandler data)
         {
+            UserDB userDB = new UserDB();
             string firstName;
             string lastName;
             string userName;
@@ -24,6 +26,8 @@ namespace LibraryConsoleUI
             userName = Console.ReadLine();
             Console.WriteLine("Password?");
             password = Console.ReadLine();
+            UserDTO newUser = new UserDTO() { FirstName = firstName, LastName = lastName, UserName = userName, Password = password, Role = role };
+            userDB.Add(newUser);
             data.Users.Add(new UserDTO() { FirstName = firstName, LastName = lastName, UserName = userName, Password = password, Role = role });
         }
     }

@@ -63,6 +63,6 @@
     <Build Include="Book.sql" />
     <Build Include="Genre.sql" />
     <Build Include="Role.sql" />
-    <Build Include="User.sql" />
+    <Build Include="dbo.User.sql" />
   </ItemGroup>
 </Project>
