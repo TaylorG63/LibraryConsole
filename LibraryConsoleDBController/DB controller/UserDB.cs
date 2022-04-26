@@ -8,23 +8,6 @@ namespace LibraryConsoleDBController.DB_controller
 {
     public class UserDB : DBController<UserDTO>
     {
-        internal List<UserDTO> Users { get; set; }
-
-        public UserDB()
-        {
-            Users = new List<UserDTO>()
-            {
-                new UserDTO(){FirstName = "Bob", LastName = "Ross", UserName = "BobRoss", Password = "123", Role = Roles.Librarian },
-                new UserDTO(){FirstName = "Jane", LastName = "Doe", UserName = "JaneDoe", Password = "456", Role = Roles.Guest },
-                new UserDTO(){FirstName = "supercalifragilisticexpialidocious", LastName = "supercalifragilisticexpialidocious", UserName = "supercalifragilisticexpialidocious", Password = "456", Role = Roles.Administrator },
-                new UserDTO(){FirstName = "Jim", LastName = "Carry", UserName = "Jimmy555", Password = "78910", Role = Roles.Patron}
-            };
-        }
-
-        public UserDB(List<UserDTO> users)
-        {
-            Users = users;
-        }
 
         //CRUD
         public override void Add(UserDTO add) 
@@ -111,21 +94,22 @@ namespace LibraryConsoleDBController.DB_controller
 
         public override void Update(UserDTO update)
         {
-            int index = 0;
-            for (int i = 0; i < Users.Count; i++)
+            Conn = new SqlConnection(ConnectionString);
+            string query = $"UPDATE [dbo].[User]" +
+                $"SET Role={(int)update.Role}, FirstName={update.FirstName}, LastName={update.LastName}, Password={update.Password}" +
+                $"WHERE Id={update.Id}";
+            try
             {
-                if (Users[i].UserName == update.UserName)
-                {
-                    index = i;
-                    break;
-                }
-                if (i == Users.Count && Users[i].UserName != update.UserName)
-                {
-                    throw new Exception("User Not Found");
-                }
+                Conn.Open();
+                Command = new SqlCommand(query, Conn);
             }
-            Users[index] = update;
-            //call an update SQL query
+            catch (Exception err)
+            {
+                Console.WriteLine(err);
+                throw;
+            }
+            Conn.Close();
+            Conn.Dispose();
         }
     }
 }
