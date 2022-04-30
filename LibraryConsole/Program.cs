@@ -1,5 +1,6 @@
 ﻿using LibraryConsoleLib.DTO;
 using LibraryConsoleUI.CRUD;
+using LibraryConsoleDBController.DB_controller;
 
 namespace LibraryConsoleUI
 {
@@ -9,7 +10,7 @@ namespace LibraryConsoleUI
         public static CreateMethods CRUDCreate = new CreateMethods();
         public static ReadMethods CRUDRead = new ReadMethods(Data);
         public static UpdateMethods CRUDUpdate = new UpdateMethods(Data);
-        public static DeleteMethods CRUDDelete = new DeleteMethods();
+        public static DeleteMethods CRUDDelete = new DeleteMethods(Data);
         static void Main(string[] args)
         {
             EntryMenu();
@@ -25,7 +26,7 @@ namespace LibraryConsoleUI
                 Console.WriteLine("\n      ~~~~Welcome~~~~\nType option and hit Enter to select\n");
                 Console.WriteLine("  g - use program as a guest\n  r - register as a new guest\n  l - login\n  ex - exit program\n");
                 Input = Console.ReadLine()!;
-                switch (Input)
+                switch (Input.ToLower())
                 {
                     case "g":
                         Console.WriteLine("Continuing as guest\n");
@@ -55,21 +56,26 @@ namespace LibraryConsoleUI
         {
             string Input = "test";
 
+            string Welcome = "\n  o - logout\n  pp - print profile\n  pr - print roles\n  pu - print users\n  eu - edit user";
+            if (Data.CurrentUser.UserName != null)
+            {
+                Welcome += "\n  delete - Delete User";
+            }
             Console.WriteLine("\n      ~~~~Main Menu~~~~\nType option and hit Enter to select\n");
-            Console.WriteLine("\n  o - logout\n  pp - print profile\n  pr - print roles\n  pu - print users\n  eu - edit user");
+            Console.WriteLine(Welcome);
             while (Input.ToLower() != "o")
             {
                 Console.WriteLine("\nType option to continue");
                 Input = Console.ReadLine()!;
                 Console.Clear();
                 Console.WriteLine("\n      ~~~~Main Menu~~~~\nType option and hit Enter to select\n");
-                Console.WriteLine("\n  o - logout\n  pp - print profile\n  pr - print roles\n  pu - print users\n");
+                Console.WriteLine(Welcome);
                 Console.WriteLine();
-                switch (Input)
+                switch (Input.ToLower())
                 {
                     case "o":
                         Console.WriteLine("Logging out\n");
-                        CRUDRead.Data.CurrentUser = new UserDTO() { Role = Roles.Guest };
+                        Data.CurrentUser = new UserDTO() { Role = Roles.Guest };
                         break;
                     case "pp":
                         Console.WriteLine("Printing Profile\n");
@@ -85,7 +91,24 @@ namespace LibraryConsoleUI
                         break;
                     case "eu":
                         Console.WriteLine("Editing User");
-                        
+                        CRUDUpdate.UpdateSelector(Data.CurrentUser);
+                        break;
+                    case "delete":
+                        if (Data.CurrentUser.UserName != null)
+                        {
+                            Console.WriteLine("Delete User?");
+                            Console.Write("y/n : ");
+                            Input = Console.ReadLine();
+                            if (Input.ToLower() == "y")
+                            {
+                                CRUDDelete.DeleteUser(Data.CurrentUser);
+                                Data.CurrentUser = new UserDTO() { Role = Roles.Guest };
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Current User does not have a User Name");
+                        }
                         break;
                     default:
                         Console.WriteLine("Invalid input.\n");
@@ -108,6 +131,7 @@ namespace LibraryConsoleUI
             if (_user != _guest)
             {
                 Data.CurrentUser = _user;
+                Console.Clear();
                 Console.WriteLine($"Login successful, Welcome {Data.CurrentUser.UserName}");
                 MainMenu();
             }

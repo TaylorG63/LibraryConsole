@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryConsoleLib.DTO;
 using LibraryConsoleDBController.DB_controller;
+using LibraryConsoleLib;
 
 namespace LibraryConsoleUI.CRUD
 {
@@ -55,7 +56,7 @@ namespace LibraryConsoleUI.CRUD
             //Console.WriteLine("Current Roles\n");
             for(int i = 0; i < role.Count; i++)
             {
-                output+= $"\n{role[i].RoleName}";
+                output+= $"\n  {i+1}. {role[i].RoleName}";
             }
             return output;
         }
@@ -110,9 +111,14 @@ namespace LibraryConsoleUI.CRUD
         {
             for (int i = 0; i < Data.Users.Count; i++)
             {
-                if (Data.Users[i].UserName == user.UserName && Data.Users[i].Password == user.Password)
+                if (Data.Users[i].UserName == user.UserName )
                 {
-                    return Data.Users[i];
+                    Hasher hasher = new Hasher();
+                    string _temp = hasher.Hash(user.Password, Data.Users[i].Salt);
+                    if (Data.Users[i].Password == _temp)
+                    {
+                        return Data.Users[i];
+                    }
                 }
             }
             return user;

@@ -5,7 +5,6 @@
 	[FirstName] varchar(50) NOT NULL,
 	[LastName] varchar(50) NOT NULL,
 	[UserName] varchar(50) NOT NULL,
-	[Password] varchar(64) NOT NULL,
+	[Password] varchar(MAX) NOT NULL,
 	[Salt] varchar(64) not null
-	
 )

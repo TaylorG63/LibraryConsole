@@ -17,6 +17,13 @@ namespace LibraryConsoleUI
         public List<RoleDTO> CurrentRoles;
         public List<UserDTO> Users;
         public UserDTO CurrentUser;
+        public UserDB DBUsers = new UserDB();
+        public RoleDB DBRoles = new RoleDB();
+        public PublisherDB DBPublishers = new PublisherDB();
+        public GenreDB DBGenre = new GenreDB();
+        public BookDB DBBooks = new BookDB();
+        public AuthorDB DBAuthors = new AuthorDB();
+
         public DataHandler() {
             
             Authors = new AuthorDB().Get();

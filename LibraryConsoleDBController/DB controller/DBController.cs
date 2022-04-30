@@ -8,6 +8,7 @@ namespace LibraryConsoleDBController.DB_controller
         protected SqlConnection Conn = new SqlConnection();
         protected SqlCommand Command;
         protected string ConnectionString;
+        protected LoggingDB Log = new LoggingDB();
         public DBController() 
         {
             try

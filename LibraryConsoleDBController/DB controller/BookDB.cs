@@ -24,7 +24,7 @@ namespace LibraryConsoleDBController.DB_controller
 
         public override void Update(BookDTO update)
         {
-            throw new NotImplementedException();
+            Log.Add("Books", "Update", new NotImplementedException());
         }
     }
 }

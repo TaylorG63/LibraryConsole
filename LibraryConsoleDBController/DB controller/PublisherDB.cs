@@ -23,7 +23,7 @@ namespace LibraryConsoleDBController.DB_controller
 
         public override void Update(PublisherDTO update)
         {
-            throw new NotImplementedException();
+            Log.Add("PublisherDB", "Update", new NotImplementedException());
         }
     }
 }

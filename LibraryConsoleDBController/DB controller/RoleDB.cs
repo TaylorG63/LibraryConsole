@@ -29,6 +29,7 @@ namespace LibraryConsoleDBController.DB_controller
 
         public override void Update(RoleDTO update)
         {
+            Log.Add("Role", "Update", new NotImplementedException());
             throw new NotImplementedException();
         }
     }

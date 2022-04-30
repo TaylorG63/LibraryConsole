@@ -27,7 +27,7 @@ namespace LibraryConsoleDBController.DB_controller
 
         public override void Update(GenreDTO update)
         {
-            throw new NotImplementedException();
+            Log.Add("Genres", "Update", new NotImplementedException());
         }
     }
 }

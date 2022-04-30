@@ -1,18 +1,29 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using LibraryConsoleDBController.DB_controller;
 using LibraryConsoleLib.DTO;
-using System.Collections.Generic;
 using LibraryConsoleUI;
 using LibraryConsoleUI.CRUD;
+using System.Configuration;
+using Autofac.Extras.Moq;
 
 namespace LibraryConsoleUnitTest
 {
     [TestClass]
     public class DBTesters
     {
+        
         [TestMethod]
         public void GetUsers()
         {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<UserDB>()
+                    .Setup(x => x.Get()).Returns(GetSampleUsers());
+                var _user = mock.Create<UserDB>();
+                var expected = GetSampleUsers();
+                var actual = _user.Get();
+            }
             UserDB userdb = new UserDB();
             List<UserDTO> users = userdb.Get();
             Assert.IsTrue(users.Count > 0);
@@ -54,8 +65,19 @@ namespace LibraryConsoleUnitTest
             Assert.IsFalse(users[0] == saveuser);
             userdb.Update(saveuser);
         }
-
+        private List<UserDTO> GetSampleUsers()
+        {
+            List<UserDTO> users = new List<UserDTO>()
+            {
+                new UserDTO() { FirstName = "Bob", LastName = "Ross", Id=1},
+                new UserDTO() { FirstName = "Rob", LastName = "Boss", Id=2},
+                new UserDTO() { FirstName = "Jane", LastName = "Doe", Id=3},
+                new UserDTO() { FirstName = "Janet", LastName = "Doe", Id=4}
+            };
+            return users;
+        }
     }
+    
     [TestClass]
     public class DataHandlerTesters
     {
